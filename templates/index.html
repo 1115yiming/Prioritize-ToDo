@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Priority Calculator</title>
+  <script>
+    function sendTasks() {
+      // Collecting task data
+      var tasks = {};
+      for (var i = 1; i <= 3; i++) {  // Adjust this loop for more tasks
+        var urgency = document.getElementById('urgency' + i).value;
+        var importance = document.getElementById('importance' + i).value;
+        var taskName = document.getElementById('task' + i).value;
+        if (taskName) {
+          tasks[taskName] = [parseInt(urgency, 10), parseInt(importance, 10)];
+        }
+      }
+
+      // Collecting weight factors
+      var a = parseFloat(document.getElementById('a').value);
+      var b = parseFloat(document.getElementById('b').value);
+
+      // Preparing data for POST request
+      var data = JSON.stringify({tasks: tasks, a: a, b: b});
+
+      // AJAX POST request
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://127.0.0.1:5000/calculate", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          document.getElementById('results').innerText = JSON.stringify(response, null, 2);
+        }
+      };
+      xhr.send(data);
+    }
+  </script>
+</head>
+<body>
+<h1>Task Priority Calculator</h1>
+
+<!-- Task Inputs -->
+<div>
+  Task 1: <input type="text" id="task1">
+  Urgency: <input type="number" id="urgency1">
+  Importance: <input type="number" id="importance1"><br>
+
+  Task 2: <input type="text" id="task2">
+  Urgency: <input type="number" id="urgency2">
+  Importance: <input type="number" id="importance2"><br>
+
+  Task 3: <input type="text" id="task3">
+  Urgency: <input type="number" id="urgency3">
+  Importance: <input type="number" id="importance3"><br>
+</div>
+
+<!-- Weight Factors -->
+<div>
+  <label>Weight for Urgency (a): <input type="number" step="0.1" id="a" value="0.5"></label>
+  <label>Weight for Importance (b): <input type="number" step="0.1" id="b" value="0.5"></label>
+</div>
+
+<!-- Submit Button -->
+<button onclick="sendTasks()">Calculate Priorities</button>
+
+<!-- Results -->
+<h2>Results:</h2>
+<pre id="results"></pre>
+</body>
+</html>
