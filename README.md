@@ -15,7 +15,7 @@ To run this application, you will need Python and Flask. Follow these steps to s
 
 1. **Clone the Repository (Optional)**
    If you have this project in a Git repository, clone it using:
-   git clone
+   git clone https://github.com/1115yiming/Prioritize-ToDo.git
    Otherwise, ensure you have the project files in your local machine.
 
 2. **Set Up a Virtual Environment (Optional)**
